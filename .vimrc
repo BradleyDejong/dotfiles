@@ -1,7 +1,6 @@
-execute pathogen#infect()
+source $HOME/.vim/plug.vim
 
 syntax on
-filetype on
 filetype plugin indent on
 
 set tabstop=2
@@ -62,34 +61,11 @@ set relativenumber
 set number
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 set timeoutlen=500
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exec = 'eslint_d'
-let g:syntastic_html_checkers = ['w3']
-
-let g:syntastic_error_symbol = '!!'
-let g:syntastic_style_error_symbol = '#'
-let g:syntastic_warning_symbol = '!'
-let g:syntastic_style_warning_symbol = '#'
-
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi']
-
 autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
 
 set backspace=2
 set noswapfile
@@ -100,3 +76,7 @@ set listchars=tab:>\ ,trail:-,extends:»,precedes:«,nbsp:+,eol:↲
 
 let g:vim_markdown_folding_disabled=1
 
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+let g:airline#extensions#tabline#enabled = 1
