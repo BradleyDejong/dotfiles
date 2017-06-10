@@ -26,7 +26,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
-Plug 'SirVer/ultisnips'
+Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
 filetype plugin indent on                   " required!
