@@ -79,5 +79,6 @@ let g:vim_markdown_folding_disabled=1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
+let g:airline_theme='wombat'
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
