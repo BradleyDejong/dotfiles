@@ -29,6 +29,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
+Plug 'Quramy/tsuquyomi'
 
 filetype plugin indent on                   " required!
 call plug#end()
