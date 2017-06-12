@@ -30,6 +30,7 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'Quramy/tsuquyomi'
+Plug 'tomtom/tlib_vim'
 
 filetype plugin indent on                   " required!
 call plug#end()
