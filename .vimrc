@@ -82,5 +82,3 @@ let g:ale_set_quickfix = 1
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 0
 
-colorscheme monokai
-highlight LineNr ctermfg=grey
