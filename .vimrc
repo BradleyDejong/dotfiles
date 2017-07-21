@@ -38,7 +38,7 @@ set wildignore+=*.class
 
 :map <Leader>bb :CtrlPBuffer<cr>
 let g:ctrlp_working_path_mode = 'r'
-let g:ctrlp_custom_ignore = {'dir':'\v[\/](tmp|lib|docs|dist|coverage|typings|bower_components|node_modules|target|build|bin)$'}
+let g:ctrlp_custom_ignore = {'dir':'\v[\/](tmp|lib|docs|dist|coverage|typings|bower_components|elm-stuff|node_modules|target|build|bin)$'}
 
 highlight ColorColumn ctermbg=magenta
 highlight ColorColumn guibg=magenta
@@ -79,6 +79,8 @@ let g:vim_markdown_folding_disabled=1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
-let g:airline_theme='wombat'
 set laststatus=2
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
+
+colorscheme monokai
+highlight LineNr ctermfg=grey
