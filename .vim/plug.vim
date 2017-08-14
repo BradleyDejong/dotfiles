@@ -34,6 +34,7 @@ Plug 'honza/vim-snippets'
 Plug 'Quramy/tsuquyomi'
 Plug 'tomtom/tlib_vim'
 Plug 'raichoo/purescript-vim'
+Plug 'wlangstroth/vim-racket'
 
 filetype plugin indent on                   " required!
 call plug#end()
