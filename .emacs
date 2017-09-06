@@ -16,6 +16,7 @@
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
  '(doc-view-ghostscript-program "gswin32c.exe")
+ '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
@@ -150,3 +151,9 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(setq org-directory "~/Dropbox/org")
+(setq org-default-notes-file (concat org-directory "/capture.org"))
+(define-key global-map "\C-cc" 'org-capture)
+
+
