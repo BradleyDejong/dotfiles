@@ -12,11 +12,6 @@
       "b" 'switch-to-buffer
       )))
 
-(use-package evil-jumper
-  :ensure t
-  :config
-  (global-evil-jumper-mode))
-
 (use-package evil-surround
   :ensure t
   :config
@@ -128,7 +123,6 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-directory "~/Dropbox/org")
      (setq org-default-notes-file (concat org-directory "/capture.org"))
-     (org-babel-load-file (concat user-emacs-directory "config.org"))
    #+END_SRC
    
 ** Capture
@@ -153,7 +147,6 @@
        :ensure t
        :config
        (flycheck-add-mode 'typescript-tslint 'web-mode))
-   
    #+END_SRC
    
 ** Snippets
