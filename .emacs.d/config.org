@@ -43,6 +43,7 @@
   :ensure t
   :config
   (global-set-key (kbd "M-p") 'helm-projectile)
+  (projectile-mode 1)
   )
   #+END_SRC
 
@@ -92,7 +93,7 @@
   (use-package solarized-theme
     :ensure t
     :config
-    (load-theme 'solarized-dark))
+    (load-theme 'solarized-light))
 #+END_SRC
 
 * Org mode extensions
@@ -143,11 +144,16 @@
 
 ** Flycheck
    #+BEGIN_SRC emacs-lisp
-     (use-package flycheck
-       :ensure t
-       :config
-       (flycheck-add-mode 'typescript-tslint 'web-mode))
+          (use-package flycheck
+            :ensure t
+            :config
+            (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers '(javascript-jshint)))
+            (flycheck-add-mode 'typescript-tslint 'typescript-mode)
+            (flycheck-add-mode 'javascript-eslint 'js-mode))
    #+END_SRC
+
+   #+RESULTS:
+   : t
    
 ** Snippets
    
@@ -158,6 +164,16 @@
        (yas-reload-all)
        (add-hook 'typescript-mode-hook #'yas-minor-mode))
    #+END_SRC
+
+   
+* NPM
+#+BEGIN_SRC emacs-lisp
+  (use-package npm-mode
+    :ensure t)
+
+#+END_SRC
+
+#+RESULTS:
 
 * Languages
 
@@ -174,6 +190,7 @@
         :mode "\\.\\(js\\|json\\)$"
         :config
         (add-hook 'js-mode-hook 'js2-minor-mode)
+        (add-hook 'js-mode-hook (lambda () (flycheck-mode +1)))
         (setq js2-basic-offset 2
               js2-highlight-level 3
               js-indent-level 2
@@ -181,6 +198,8 @@
               js2-mode-show-strict-warnings nil))
     
     #+END_SRC
+
+    #+RESULTS:
 
 *** Typescript
     #+BEGIN_SRC emacs-lisp
@@ -206,6 +225,27 @@
         (add-hook 'typescript-mode-hook #'setup-tide-mode)
     #+END_SRC
 
+*** Elm
+#+BEGIN_SRC emacs-lisp
+  (use-package elm-mode
+    :ensure t
+    :config
+    (setq elm-format-on-save t)
+    (add-hook 'elm-mode-hook (lambda () (company-mode +1)))
+    (add-to-list 'company-backends 'company-elm))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+    
+* Docker
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
 
 * Random fun stuff
   #+BEGIN_SRC emacs-lisp
@@ -214,3 +254,4 @@
     :config
     (nyan-mode t))
   #+END_SRC
+  
