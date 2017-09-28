@@ -164,6 +164,16 @@
        (yas-reload-all)
        (add-hook 'typescript-mode-hook #'yas-minor-mode))
    #+END_SRC
+   
+** editor config
+#+BEGIN_SRC emacs-lisp
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
+#+END_SRC
+
+#+RESULTS:
 
    
 * NPM
