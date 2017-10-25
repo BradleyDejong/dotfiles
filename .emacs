@@ -20,7 +20,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (elm-mode npm-mode dockerfile-mode nyan-mode yasnippet ox-gfm company tide js2-mode org-present ob-http org-bullets helm-projectile helm linum-relative evil-indent-textobject evil-surround evil-jumper evil-leader use-package typescript-mode solarized-theme paredit evil cider)))
+    (editorconfig elm-mode npm-mode dockerfile-mode nyan-mode yasnippet ox-gfm company tide js2-mode org-present ob-http org-bullets helm-projectile helm linum-relative evil-indent-textobject evil-surround evil-jumper evil-leader use-package typescript-mode solarized-theme paredit evil cider)))
  '(typescript-indent-level 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
