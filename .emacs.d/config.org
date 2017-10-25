@@ -1,3 +1,11 @@
+* Path configuration
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+#+END_SRC
 * Evil mode
   #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -97,6 +105,16 @@
 #+END_SRC
 
 * Org mode extensions
+  
+** org bullets
+#+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
+#+RESULTS:
 
 ** HTTP language for curl execution
    #+BEGIN_SRC emacs-lisp
