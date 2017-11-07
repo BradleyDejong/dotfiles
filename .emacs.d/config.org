@@ -247,11 +247,18 @@
         ;; `M-x package-install [ret] company`
         (company-mode +1))
 
-    
+          
         (add-hook 'before-save-hook 'tide-format-before-save)
 
         (add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+      (add-hook 'typescript-mode-hook
+                (lambda ()
+                  (local-set-key (kbd "C-c f") 'tide-fix)))
     #+END_SRC
+
+    #+RESULTS:
+    | (lambda nil (local-set-key (kbd C-c f) (quote tide-fix))) | (lambda nil (local-set-key (kbd C-c f) (tide-fix))) | (lambda nil (local-set-key (C-c f) (tide-fix))) | setup-tide-mode | yas-minor-mode |
 
 *** Elm
 #+BEGIN_SRC emacs-lisp
