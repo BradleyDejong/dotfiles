@@ -19,6 +19,7 @@ call minpac#add('junegunn/fzf', {'do': {-> system('./install --bin')}})
 call minpac#add('junegunn/fzf.vim', {'do': {-> system('./install --bin')}})
 call minpac#add('tpope/vim-scriptease', { 'type': 'opt' })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
+call minpac#add('mhinz/vim-grepper')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -39,3 +40,11 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
 let g:ale_sign_column_always = 1
+
+let g:grepper = {}
+let g:grepper.tools = ['grep', 'git', 'rg']
+nnoremap <Leader>* :Grepper -cword -noprompt<CR>
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+
+nnoremap <Leader>g :Grepper -tool git<CR>
