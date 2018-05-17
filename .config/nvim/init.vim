@@ -20,6 +20,8 @@ call minpac#add('junegunn/fzf.vim', {'do': {-> system('./install --bin')}})
 call minpac#add('tpope/vim-scriptease', { 'type': 'opt' })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 call minpac#add('mhinz/vim-grepper')
+call minpac#add('janko-m/vim-test')
+let test#strategy = "dispatch"
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -48,3 +50,27 @@ nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 
 nnoremap <Leader>g :Grepper -tool git<CR>
+
+
+" Terminal cursor helpers
+if has('nvim')
+  highlight! link TermCursor Cursor
+  highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
+endif
+
+" window switching helpers
+nnoremap <M-h> <c-w>h
+nnoremap <M-j> <c-w>j
+nnoremap <M-k> <c-w>k
+nnoremap <M-l> <c-w>l
+
+if has('nvim')
+  tnoremap <M-h> <c-\><c-n><c-w>h
+  tnoremap <M-j> <c-\><c-n><c-w>j
+  tnoremap <M-k> <c-\><c-n><c-w>k
+  tnoremap <M-l> <c-\><c-n><c-w>l
+endif
+
+if has('nvim') && executable('nvr')
+  let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+endif
