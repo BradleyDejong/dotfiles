@@ -9,6 +9,7 @@ call minpac#init()
 
 
 call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-obsession')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-dispatch')
 call minpac#add('tpope/vim-projectionist')
@@ -21,6 +22,7 @@ call minpac#add('tpope/vim-scriptease', { 'type': 'opt' })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 call minpac#add('mhinz/vim-grepper')
 call minpac#add('janko-m/vim-test')
+call minpac#add('editorconfig/editorconfig-vim')
 let test#strategy = "dispatch"
 
 command! PackUpdate call minpac#update()
@@ -74,3 +76,15 @@ endif
 if has('nvim') && executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 endif
+
+"undo persistence
+set undofile
+set undodir=$VIMDATA/undo
+call mkdir(&undodir, 'p')
+
+
+augroup vimrc
+  autocmd!
+  autocmd BufWritePre /tmp/* setlocal noundofile
+augroup END
+
