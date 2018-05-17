@@ -27,6 +27,7 @@ let test#strategy = "dispatch"
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
+command! PackList echo join(minpac#getpackages("minpac", "start"), "\n")
 
 nnoremap <C-p> :<C-u>FZF<CR>
 
@@ -88,3 +89,5 @@ augroup vimrc
   autocmd BufWritePre /tmp/* setlocal noundofile
 augroup END
 
+source $HOME/.config/nvim/deoplete.vim
+source $HOME/.config/nvim/language-client.vim
