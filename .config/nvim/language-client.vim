@@ -6,7 +6,8 @@ set hidden
 
 let g:LanguageClient_serverCommands = {
     \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'typescript': ['javascript-typescript-stdio']
+    \ 'typescript': ['javascript-typescript-stdio'],
+    \ 'haskell': ['hie', '--lsp']
     \ }
 
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
