@@ -1,7 +1,7 @@
 call minpac#add('Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'})
 let g:deoplete#enable_at_startup = 1
 
-call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
 
 " set sources
 let g:deoplete#sources = {}
