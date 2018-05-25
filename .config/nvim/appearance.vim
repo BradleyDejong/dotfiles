@@ -3,7 +3,7 @@ call minpac#add('vim-airline/vim-airline-themes')
 
 call minpac#add('altercation/vim-colors-solarized')
 set bg=dark
-let g:airline_theme='solarized'
+let g:airline_theme='molokai'
 let g:airline_solarized_bg='dark'
 
 
