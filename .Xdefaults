@@ -1,0 +1,28 @@
+
+rxvt.scrollBar: false
+rxvt.background: black
+rxvt.foreground: gray
+rxvt.font: xft:FiraCode:pixelsize=12
+rxvt.internalBorder: 10
+rxvt.depth: 32
+rxvt.background: rgba:1111/1111/1111/dddd
+rxvt.transparent: true
+rxvt.shading: 40
+
+rxvt.color0: rgb:BB/00/00
+rxvt.color1: rgb:CC/00/00
+rxvt.color2: rgb:4E/9A/06
+rxvt.color3: rgb:C4/A0/00
+rxvt.color4: rgb:34/65/A4
+rxvt.color5: rgb:75/50/7B
+rxvt.color6: rgb:06/98/9A
+rxvt.color7: rgb:D3/D7/CF
+rxvt.color8: rgb:55/57/53
+rxvt.color9: rgb:EF/29/29
+rxvt.color10: rgb:8A/E2/34
+rxvt.color11: rgb:FC/E9/4F
+rxvt.color12: rgb:72/9F/CF
+rxvt.color13: rgb:AD/7F/A8
+rxvt.color14: rgb:34/E2/E2
+rxvt.color15: rgb:EE/EE/EC
+rxvt.colorBD: rgb:ff/ff/ff
