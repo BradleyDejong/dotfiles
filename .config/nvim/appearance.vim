@@ -2,7 +2,6 @@ call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 
 call minpac#add('altercation/vim-colors-solarized')
-colorscheme solarized
 set bg=dark
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
@@ -14,3 +13,4 @@ if has('nvim')
   highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 endif
 
+colorscheme bmolokai
