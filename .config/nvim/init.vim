@@ -13,6 +13,7 @@ call minpac#add('tpope/vim-obsession')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-dispatch')
 call minpac#add('tpope/vim-projectionist')
+call minpac#add('tpope/vim-vinegar')
 call minpac#add('leafgarland/typescript-vim')
 call minpac#add('radenling/vim-dispatch-neovim')
 call minpac#add('junegunn/fzf', {'do': {-> system('./install --bin')}})
@@ -59,3 +60,7 @@ source $HOME/.config/nvim/appearance.vim
 source $HOME/.config/nvim/grepper.vim
 source $HOME/.config/nvim/terminal-setup.vim
 source $HOME/.config/nvim/ale-setup.vim
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute "helptags " . g:opamshare . "/merlin/vim/doc"
