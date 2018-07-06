@@ -64,3 +64,5 @@ source $HOME/.config/nvim/ale-setup.vim
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
+autocmd FileType ocaml execute "set rtp+=" . substitute(system('opam config var share'), '\n$', '', '''') . "/ocp-indent/vim/indent/ocaml.vim"
+
