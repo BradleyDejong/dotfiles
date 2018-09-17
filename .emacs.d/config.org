@@ -6,16 +6,26 @@
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 #+END_SRC
+* Magit
+#+BEGIN_SRC emacs-lisp
+
+(use-package magit
+  :ensure t)
+
+#+END_SRC
 * Evil mode
   #+BEGIN_SRC emacs-lisp
 (use-package evil
   :ensure t
   :config
   (evil-mode 1)
+  (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word)
+  (define-key helm-map (kbd "C-w") 'evil-delete-backward-word)
   (use-package evil-leader
     :ensure t
     :config
     (global-evil-leader-mode)
+    (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
       "b" 'switch-to-buffer
       )))
@@ -81,6 +91,7 @@
 ** indentation
    #+BEGIN_SRC emacs-lisp
      (setq-default indent-tabs-mode nil)
+     (define-key global-map (kbd "RET") 'newline-and-indent)
    #+END_SRC
    
 ** window/frame toolbars
@@ -102,6 +113,57 @@
     :ensure t
     :config
     (load-theme 'solarized-dark))
+#+END_SRC
+
+** cursor
+
+   #+BEGIN_SRC emacs-lisp
+(setq evil-emacs-state-cursor '("red" box))
+(setq evil-normal-state-cursor '("green" box))
+(setq evil-visual-state-cursor '("orange" box))
+(setq evil-insert-state-cursor '("red" bar))
+(setq evil-replace-state-cursor '("red" bar))
+(setq evil-operator-state-cursor '("red" hollow))
+   #+END_SRC
+** scrolling
+#+BEGIN_SRC emacs-lisp
+  (use-package smooth-scrolling
+    :ensure t
+    :config
+    (smooth-scrolling-mode 1)
+    (setq scroll-margin 5
+          scroll-conservatively 9999
+          scroll-step 1))
+#+END_SRC
+
+** esc always leaves things
+#+BEGIN_SRC emacs-lisp
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+  In Delete Selection mode, if the mark is active, just deactivate it;
+  then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
+  (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  (global-set-key [escape] 'evil-exit-emacs-state)
+#+END_SRC
+
+** clean up minor mode displays
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :ensure t
+  :config
+  (diminish 'visual-line-mode))
+
 #+END_SRC
 
 * Org mode extensions
