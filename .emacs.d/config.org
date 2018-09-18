@@ -112,14 +112,19 @@
   (use-package solarized-theme
     :ensure t
     :config
-    (load-theme 'solarized-dark))
+    (if (display-graphic-p)
+      (load-theme 'solarized-light)
+      (load-theme 'solarized-dark)))
+    
+  (use-package color-theme-solarized
+    :ensure t)
 #+END_SRC
 
 ** cursor
 
    #+BEGIN_SRC emacs-lisp
 (setq evil-emacs-state-cursor '("red" box))
-(setq evil-normal-state-cursor '("green" box))
+(setq evil-normal-state-cursor '("blue" box))
 (setq evil-visual-state-cursor '("orange" box))
 (setq evil-insert-state-cursor '("red" bar))
 (setq evil-replace-state-cursor '("red" bar))
@@ -267,6 +272,17 @@
 
 #+RESULTS:
 
+** Prettier.io
+#+BEGIN_SRC emacs-lisp
+  (use-package prettier-js
+    :ensure t
+    :config
+    (add-hook 'js2-mode-hook 'prettier-js-mode)
+    (add-hook 'web-mode-hook 'prettier-js-mode)
+    (add-hook 'typescript-mode-hook 'prettier-js-mode))
+
+#+END_SRC
+
    
 * NPM
 #+BEGIN_SRC emacs-lisp
@@ -285,6 +301,11 @@
       (use-package jdee
         :ensure t)
   #+END_SRC
+  
+#+BEGIN_SRC emacs-lisp
+  (use-package groovy-mode
+    :ensure t)
+#+END_SRC
 
 ** Web
    
@@ -370,4 +391,5 @@
     :config
     (nyan-mode t))
   #+END_SRC
+  
   
