@@ -11,6 +11,10 @@
 
 (use-package magit
   :ensure t)
+  
+(use-package evil-magit
+  :ensure t
+  :after magit)
 
 #+END_SRC
 * Evil mode
