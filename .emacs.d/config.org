@@ -10,7 +10,9 @@
 #+BEGIN_SRC emacs-lisp
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
   
 (use-package evil-magit
   :ensure t
@@ -21,6 +23,9 @@
   #+BEGIN_SRC emacs-lisp
 (use-package evil
   :ensure t
+  :after helm
+  :init
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
   (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word)
@@ -41,6 +46,12 @@
 
 (use-package evil-indent-textobject
   :ensure t)
+  
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
   #+END_SRC
 
@@ -74,6 +85,15 @@
   : t
   
 * File settings
+** PDF tools
+#+BEGIN_SRC emacs-lisp
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
+
+#+END_SRC
 
 ** backup directory
 #+BEGIN_SRC emacs-lisp
