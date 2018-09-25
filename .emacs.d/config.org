@@ -369,7 +369,8 @@
        :diminish yas-minor-mode
        :config
        (yas-reload-all)
-       (add-hook 'typescript-mode-hook #'yas-minor-mode))
+       (add-hook 'typescript-mode-hook #'yas-minor-mode)
+       (add-hook 'js2-mode #'yas-minor-mode))
    #+END_SRC
    
 ** editor config
