@@ -359,6 +359,16 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+END_SRC
+
+** Key bindings
+#+BEGIN_SRC emacs-lisp
+(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
+#+END_SRC
+
+** GTD
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+#+END_SRC
 * Programming helpers
   
 ** Code completion
@@ -463,7 +473,17 @@
               js-indent-level 2
               js2-mode-show-parse-errors nil
               js2-mode-show-strict-warnings nil))
-    
+
+
+      (use-package company-tern
+        :ensure t
+        :after company
+        :init (add-to-list 'company-backends 'company-tern)
+        :config
+        (add-hook 'js2-mode-hook (lambda ()
+                                   (tern-mode)
+                                   (company-mode))))
+
     #+END_SRC
 
     #+RESULTS:
