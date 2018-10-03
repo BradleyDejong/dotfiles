@@ -21,6 +21,14 @@
 #+END_SRC
 * Evil mode
   #+BEGIN_SRC emacs-lisp
+(use-package evil-leader
+    :ensure t
+    :config
+    (global-evil-leader-mode)
+    (evil-leader/set-key
+      "b" 'switch-to-buffer
+      "g" 'helm-projectile-grep))
+
 (use-package evil
   :ensure t
   :after helm
@@ -29,15 +37,7 @@
   :config
   (evil-mode 1)
   (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word)
-  (define-key helm-map (kbd "C-w") 'evil-delete-backward-word)
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (setq evil-leader/in-all-states 1)
-    (evil-leader/set-key
-      "b" 'switch-to-buffer
-      )))
+  (define-key helm-map (kbd "C-w") 'evil-delete-backward-word))
 
 (use-package evil-surround
   :ensure t
