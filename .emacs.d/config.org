@@ -354,6 +354,10 @@
                              ("~/Dropbox/org/tickler.org" :maxlevel . 2)))
 #+END_SRC
 
+** Searching
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/org/" "\.org$"))
+#+END_SRC
 ** Agenda commands
    
 #+BEGIN_SRC emacs-lisp
