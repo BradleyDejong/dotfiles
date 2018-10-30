@@ -421,6 +421,8 @@
 ** GTD
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+(setq org-log-done 'time)
 #+END_SRC
 * Programming helpers
   
@@ -587,6 +589,12 @@
 #+RESULTS:
 : t
 
+** Haskell
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :ensure t)
+
+#+END_SRC
     
 * Docker
 #+BEGIN_SRC emacs-lisp
