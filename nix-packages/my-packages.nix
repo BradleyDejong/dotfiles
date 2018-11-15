@@ -28,6 +28,7 @@ let
       pkgs.nix
       pkgs.httpie
       pkgs.git
+      pkgs.emacs
       pkgs.neovim
       pkgs.tree
       pkgs.zsh
