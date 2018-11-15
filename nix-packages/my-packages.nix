@@ -31,6 +31,7 @@ let
       pkgs.tree
       pkgs.zsh
       pkgs.antibody
+      pkgs.graphviz
       # pkgs.pandoc
       # ripgrep git-annex imgcat maven pandoc purescript  ruby tmux vim xdot
     ];
