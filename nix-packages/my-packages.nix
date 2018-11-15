@@ -26,6 +26,7 @@ let
       pkgs.curl
       pkgs.htop
       pkgs.nix
+      pkgs.httpie
       pkgs.git
       pkgs.neovim
       pkgs.tree
