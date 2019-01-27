@@ -15,7 +15,6 @@ call minpac#add('tpope/vim-dispatch')
 call minpac#add('elmcast/elm-vim')
 call minpac#add('tpope/vim-projectionist')
 call minpac#add('tpope/vim-vinegar')
-call minpac#add('leafgarland/typescript-vim')
 call minpac#add('radenling/vim-dispatch-neovim')
 call minpac#add('junegunn/fzf', {'do': {-> system('./install --bin')}})
 call minpac#add('junegunn/fzf.vim', {'do': {-> system('./install --bin')}})
@@ -23,9 +22,7 @@ call minpac#add('tpope/vim-scriptease', { 'type': 'opt' })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 call minpac#add('janko-m/vim-test')
 call minpac#add('editorconfig/editorconfig-vim')
-call minpac#add('sonph/onehalf')
 " call minpac#add('JalaiAmitahl/maven-compiler.vim')
-call minpac#add('mikelue/vim-maven-plugin')
 call minpac#add('KeitaNakamura/neodark.vim')
 call minpac#add('ryanoasis/vim-devicons')
 let test#strategy = "dispatch"
@@ -68,10 +65,6 @@ source $HOME/.config/nvim/terminal-setup.vim
 "source $HOME/.config/nvim/ale-setup.vim
 source $HOME/.config/nvim/groovy-test.vim
 
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-execute "helptags " . g:opamshare . "/merlin/vim/doc"
-
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -104,3 +97,8 @@ endfunction
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+set cmdheight=2
+" Find symbol of current document
+nmap <leader>o  :<C-u>CocList outline<cr>
