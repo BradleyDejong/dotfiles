@@ -3,7 +3,11 @@ call minpac#add('vim-airline/vim-airline-themes')
 
 call minpac#add('altercation/vim-colors-solarized')
 call minpac#add('romainl/Apprentice')
-colorscheme apprentice
+call minpac#add('morhetz/gruvbox')
+" colorscheme monokai
+" colorscheme apprentice
+" colorscheme onehalfdark
+colorscheme gruvbox
 set bg=dark
 let g:airline_theme='molokai'
 let g:airline_solarized_bg='dark'
