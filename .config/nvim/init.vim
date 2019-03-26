@@ -64,6 +64,7 @@ source $HOME/.config/nvim/grepper.vim
 source $HOME/.config/nvim/terminal-setup.vim
 "source $HOME/.config/nvim/ale-setup.vim
 source $HOME/.config/nvim/groovy-test.vim
+source $HOME/.config/nvim/snippets.vim
 
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -102,3 +103,6 @@ set signcolumn=yes
 set cmdheight=2
 " Find symbol of current document
 nmap <leader>o  :<C-u>CocList outline<cr>
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+
+call minpac#add('raichoo/purescript-vim')
