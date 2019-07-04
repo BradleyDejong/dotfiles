@@ -76,7 +76,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(smartparens)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -345,16 +345,19 @@ you should place your code here."
     :ensure t)
 
   (setq org-directory "~/org")
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
   (setq org-default-notes-file (concat org-directory "/inbox.org"))
   (setq org-agenda-files '("~/org"))
   (setq org-agenda-files '("~/org/inbox.org"
-                            "~/org/main.org"
                             "~/org/projects.org"
-                            "~/org/tickler.org"))
+                            "~/org/tickler.org"
+                            "~/org/journal.org"))
 
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                   (file+headline "~/org/inbox.org" "Tasks")
                                   "* TODO %i%?")
+                                 ("j" "Journal" entry (file+datetree "~/org/journal.org")
+                                   "* %?\n%U\n" :clock-in t :clock-resume t)
                                  ("T" "Tickler" entry
                                    (file+headline "~/org/tickler.org" "Tickler")
                                    "* %i%? \n %U")))
@@ -365,6 +368,10 @@ you should place your code here."
   (setq org-agenda-text-search-extra-files (directory-files-recursively "~/org/" "\.org$"))
 
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (setq org-agenda-clockreport-parameter-plist
+        '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score0))
+
   (setq org-agenda-custom-commands 
         '(("o" "At work, next actions" tags-todo "@work"
            ((org-agenda-overriding-header "Work")
