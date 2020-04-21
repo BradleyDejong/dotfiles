@@ -47,6 +47,7 @@ values."
        search-engine
        javascript
        csharp
+       pdf
        fsharp
        docker
        clojure
@@ -502,6 +503,10 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
 \\usepackage{nomencl}	% For glossary
 \\usepackage{pdflscape}	% For landscape pictures and environment
 \\usepackage{verbatim} 	% For multiline comment environments
+\\usepackage[T1]{fontenc}
+\\usepackage[bitstream-charter]{mathdesign}
+\\usepackage[scaled=.9]{helvet}
+\\usepackage{courier} % tt
 \\usepackage[table]{xcolor}"
                                      ("\\section{%s}" . "\\section*{%s}")
                                      ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -536,7 +541,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#32302f" :foreground "#fdf4c1" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width ultra-condensed :foundry "nil" :family "Fira Code")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width ultra-condensed :foundry "nil" :family "Fira Code")))))
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -558,5 +563,5 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#f2e5bc" :foreground "#282828" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Fira Code")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Fira Code")))))
 )
