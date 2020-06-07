@@ -53,26 +53,23 @@ values."
        clojure
        games
        racket
-       ;; ----------------------------------------------------------------
-       ;; Example of useful layers you may want to use right away.
-       ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-       ;; <M-m f e R> (Emacs style) to install them.
-       ;; ----------------------------------------------------------------
+       org-roam
        helm
        auto-completion
        evil-commentary
-       ;; better-defaults
        emacs-lisp
        git
        markdown
-       (org :variables org-enable-reveal-js-support t org-projectile-file "TODOs.org")
+       (org :variables
+            org-enable-reveal-js-support t
+            org-projectile-file "TODOs.org"
+            org-enable-org-journal-support t)
        themes-megapack
        colors
        slack
        (shell :variables
          shell-default-height 30
          shell-default-position 'bottom)
-       ;; spell-checking
        syntax-checking
        vinegar
                                         ; version-control
@@ -159,7 +156,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Fira Code"
+   dotspacemacs-default-font '("Fira Mono"
                                :size 13
                                :weight normal
                                :width normal
@@ -381,6 +378,14 @@ you should place your code here."
                             "~/org/tickler.org"
                             "~/org/journal.org.gpg"))
 
+  (defun org-journal-find-location ()
+    ;; Open today's journal, but specify a non-nil prefix argument in order to
+    ;; inhibit inserting the heading; org-capture will insert the heading.
+    (org-journal-new-entry t)
+    ;; Position point on the journal's top-level heading so that org-capture
+    ;; will add the new entry as a child entry.
+    (goto-char (point-min)))
+
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                   (file+headline "~/org/inbox.org" "Tasks")
                                   "* TODO %i%?")
@@ -390,8 +395,10 @@ you should place your code here."
                                  ("w" "Sprint task" entry
                                    (file+headline "~/org/journal.org.gpg" "Sprint work")
                                    "* %i%? :@work:")
-                                 ("j" "Journal" entry (file+datetree "~/org/journal.org.gpg")
-                                   "* %?\n%U\n" :clock-in t :clock-resume t)
+                                 ("i" "Interruption" entry (function org-journal-find-location)
+                                  "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?" :clock-in t :clock-resume t)
+                                 ("j" "Journal entry" entry (function org-journal-find-location)
+                                  "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
                                  ("e" "Event" entry
                                    (file+headline "~/org/journal.org.gpg" "Event")
                                    "** %? \n %^T \n")
@@ -474,7 +481,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
 
   (evil-leader/set-key
     "q q" 'spacemacs/frame-killer)
-  (add-hook 'auto-save-hook 'org-save-all-org-buffers)
+  ;;(add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
   (add-to-list 'display-buffer-alist
     (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
@@ -519,9 +526,19 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
   (epa-file-enable)
   (setq epa-pinentry-mode 'loopback)
 
-  (add-hook 'org-mode-hook 
-    (lambda () 
-      (add-hook 'after-save-hook 'my-org-sync nil 'make-it-local))))
+  ;;(add-hook 'org-mode-hook 
+    ;;(lambda () 
+      ;;(add-hook 'after-save-hook 'my-org-sync nil 'make-it-local)))
+
+  (setq org-roam-directory "~/org/roam")
+  (setq org-roam-link-title-format "R:%s")
+  (setq org-roam-encrypt-files t)
+  ;;(setq org-roam-completion-system 'helm)
+  (add-hook 'after-init-hook 'org-roam-mode)
+
+  (setq org-journal-dir "~/org/journal")
+  (setq org-journal-encrypt-journal t)
+  (setq org-journal-enable-agenda-integration t))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -541,7 +558,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width ultra-condensed :foundry "nil" :family "Fira Code")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width ultra-condensed :foundry "nil" :family "Fira Mono")))))
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -563,5 +580,5 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Fira Code")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Fira Mono")))))
 )
