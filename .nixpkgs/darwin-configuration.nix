@@ -42,6 +42,10 @@ in
       pkgs.mono6
       # pkgs.dotnet-sdk
       pkgs.graphviz
+      pkgs.editorconfig-core-c
+      pkgs.cmake
+      pkgs.libtool
+      pkgs.alacritty
     ];
 
   # Use a custom configuration.nix location.
@@ -65,6 +69,7 @@ in
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
-  nix.maxJobs = 1;
-  nix.buildCores = 1;
+  nix.maxJobs = 2;
+  nix.buildCores = 2;
+  # nixpkgs.config.allowUnsupportedSystem = true;
 }

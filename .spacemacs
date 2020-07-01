@@ -343,6 +343,10 @@ you should place your code here."
   (setq-default dotspacemacs-configuration-layers
     '((javascript :variables javascript-repl `nodejs)))
 
+  (add-to-list 'exec-path "~/.npm-global/bin")
+  (add-to-list 'exec-path "/Library/TeX/texbin")
+  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
+
   (use-package prettier-js
     :ensure t
     :config
@@ -416,7 +420,7 @@ you should place your code here."
   (setq org-agenda-clockreport-parameter-plist
         '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score0))
 
-  (setq org-agenda-custom-commands 
+  (setq org-agenda-custom-commands
         '(("o" "At work, next actions" tags-todo "@work"
            ((org-agenda-overriding-header "Work")
             (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))
@@ -526,8 +530,8 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
   (epa-file-enable)
   (setq epa-pinentry-mode 'loopback)
 
-  ;;(add-hook 'org-mode-hook 
-    ;;(lambda () 
+  ;;(add-hook 'org-mode-hook
+    ;;(lambda ()
       ;;(add-hook 'after-save-hook 'my-org-sync nil 'make-it-local)))
 
   (setq org-roam-directory "~/org/roam")
