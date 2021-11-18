@@ -31,29 +31,63 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
     '(
+       prettier
        csv
-       vue
-       treemacs
+       syntax-checking
+       (lsp
+         :variables lsp-ui-doc-position 'bottom)
+       (vue :variables vue-backend 'lsp)
+       (node :variables node-add-modules-path t)
        yaml
        treemacs
        sql
        selectric
        graphviz
+       dhall
        pandoc
+       (dap
+         )
+       (mu4e :variables
+         mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
+         mu4e-update-interval 300
+         mu4e-get-mail-command  "mbsync -a"
+         mu4e-maildir           "~/.mail"
+         mu4e-drafts-folder     "/Drafts"
+         mu4e-refile-folder     "/Archive"
+         mu4e-sent-folder       "/Sent Items"
+         mu4e-change-filenames-when-moving t
+         mu4e-trash-folder      "/Deleted Items"
+         mu4e-maildir-shortcuts
+         '( ("/Inbox" . ?i)
+            ("/Archive" . ?a)
+            ("/Drafts" . ?d)
+            ("/Deleted Items" . ?t)
+            ("/Sent Items" . ?s)))
        emoji
        html
-       typescript
-       purescript
+       (typescript :variables
+         typescript-backend 'lsp)
+       (purescript :variables
+         purescript-backend 'lsp)
        search-engine
-       javascript
+       (unicode-fonts :variables unicode-fonts-force-multi-color-on-mac t)
+       import-js
+       (javascript :variables
+           javascript-repl `skewer
+           javascript-import-tool 'import-js
+           javascript-fmt-tool 'prettier
+           javascript-fmt-on-save t
+           javascript-backend 'tern
+           javascript-lsp-linter nil)
+       tern
+       (java :variables java-backend 'lsp)
        csharp
-       pdf
+       epub
        fsharp
        docker
        clojure
        games
        racket
-       org-roam
        helm
        auto-completion
        evil-commentary
@@ -63,22 +97,28 @@ values."
        (org :variables
             org-enable-reveal-js-support t
             org-projectile-file "TODOs.org"
-            org-enable-org-journal-support t)
+            org-enable-org-journal-support t
+            org-enable-roam-support t)
+       ;; org-roam
        themes-megapack
+       dash
        colors
+       ;; (colors :variables
+       ;;   colors-enable-nyan-cat-progress-bar (display-graphic-p))
        slack
        (shell :variables
          shell-default-height 30
-         shell-default-position 'bottom)
-       syntax-checking
-       vinegar
+         shell-default-position 'bottom
+         shell-default-shell 'vterm)
+       (vinegar :variables
+         vinegar-dired-hide-details nil)
                                         ; version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(pollen-mode company-pollen)
+   dotspacemacs-additional-packages '(pollen-mode company-pollen format-all)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -150,8 +190,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(gruvbox-light-soft
-                         gruvbox-dark-soft)
+   dotspacemacs-themes '(doom-palenight
+                        gruvbox-light-soft
+                        gruvbox-dark-soft)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -283,7 +324,11 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+    dotspacemacs-line-numbers '(:disabled-for-modes
+                                 org-mode
+                                 text-mode
+                                 :relative t)
+
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -334,27 +379,102 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (defun brad/org-mode-visual-fill ()
+    (setq visual-fill-column-width 140
+      visual-fill-column-center-text t)
+    (visual-line-mode)
+    (visual-fill-column-mode 1)
+    (variable-pitch-mode 1)
+    (message "hook ran for org mode 2"))
+
+  (setq dap-auto-configure-features
+    '(sessions locals tooltip expressions))
+
+  (setq org-mime-export-options '(:section-numbers nil
+                                   :with-author nil
+                                   :with-toc nil))
+
+  (setq
+    message-send-mail-function 'smtpmail-send-it
+    user-mail-address      "DeJong.Bradley@mayo.edu"
+    user-full-name         "Bradley DeJong"
+    smtpmail-smtp-server   "smtp.office365.com"
+    smtpmail-smtp-service  587
+    smtpmail-stream-type   'starttls
+    smtpmail-debug-info    t)
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (brad/org-mode-visual-fill)))
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+  ;; (use-package visual-fill-column
+  ;;   :hook (org-mode . brad/org-mode-visual-fill))
+  (use-package org-mime
+    :ensure t
+
+    :config (add-hook 'message-send-hook 'org-mime-confirm-when-no-multipart))
+
+  (use-package dired
+    :ensure nil
+    :custom ((dired-listing-switches "-agho")))
+
+  (require 'dap-chrome)
+  (require 'dap-java)
+
+  (use-package ox-report
+    :ensure t)
+
   (defun brad-ramda-search (v)
     (interactive "sterm:")
     (if v
       (eww (concat "https://ramdajs.com/docs/#" v))
       (eww "https://ramdajs.com/docs/")))
 
-  (setq-default dotspacemacs-configuration-layers
-    '((javascript :variables javascript-repl `nodejs)))
+  ;; (setq-default dotspacemacs-configuration-layers
+  ;;   '((javascript :variables javascript-repl `nodejs)))
 
-  (add-to-list 'exec-path "~/.npm-global/bin")
+  (add-to-list 'exec-path "/Users/m161475/.npm-global/bin")
   (add-to-list 'exec-path "/Library/TeX/texbin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
 
-  (use-package prettier-js
-    :ensure t
-    :config
-    (add-hook 'js2-mode-hook 'prettier-js-mode)
-    (add-hook 'web-mode-hook 'prettier-js-mode)
-    ;;(add-hook 'vue-mode-hook 'prettier-js-mode)
-    (add-hook 'scss-mode-hook 'prettier-js-mode)
-    (add-hook 'typescript-mode-hook 'prettier-js-mode))
+  (add-hook 'purescript-mode-hook 'format-all-mode)
+
+  (set-face-attribute 'fixed-pitch nil :font "Fira Mono" :height 120)
+  (set-face-attribute 'variable-pitch nil :font "Charter" :height 130)
+  (set-face-attribute 'variable-pitch nil :font "Garamond" :height 140)
+
+  (with-eval-after-load 'org
+    (dolist (face '((org-level-1 . 1.2)
+                     (org-level-2 . 1.1)
+                     (org-level-3 . 1.1)
+                     (org-level-4 . 1.1)
+                     (org-level-5 . 1.1)
+                     (org-level-6 . 1.1)
+                     (org-level-7 . 1.1)
+                     (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "Cooper Hewitt" :weight 'regular :height (cdr face)))
+
+    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-verbatim nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+    ;; (set-face-attribute 'org-indent nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-ellipsis nil :inherit 'variable-pitch)
+
+    (set-face-attribute 'org-footnote nil :inherit 'fixed-pitch)
+    (setq org-ellipsis " ⤵"
+      org-hide-emphasis-markers nil)
+    )
+
+  ;; (use-package prettier-js
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'js2-mode-hook 'prettier-js-mode)
+  ;;   (add-hook 'web-mode-hook 'prettier-js-mode)
+  ;;   ;;(add-hook 'vue-mode-hook 'prettier-js-mode)
+  ;;   (add-hook 'scss-mode-hook 'prettier-js-mode)
+  ;;   (add-hook 'typescript-mode-hook 'prettier-js-mode))
 
   ;; (linum-relative-global-mode)
 
@@ -534,7 +654,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
     ;;(lambda ()
       ;;(add-hook 'after-save-hook 'my-org-sync nil 'make-it-local)))
 
-  (setq org-roam-directory "~/org/roam")
+  (setq org-roam-directory (file-truename "~/org/roam"))
   (setq org-roam-link-title-format "R:%s")
   (setq org-roam-encrypt-files t)
   ;;(setq org-roam-completion-system 'helm)
@@ -562,7 +682,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width ultra-condensed :foundry "nil" :family "Fira Mono")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width ultra-condensed :foundry "nil" :family "Fira Mono")))))
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -574,15 +694,66 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
+ '(fci-rule-color "#525252")
+ '(golden-ratio-mode nil)
+ '(helm-completion-style 'emacs)
+  '(hl-todo-keyword-faces
+     '(("TODO" . "#dc752f")
+        ("NEXT" . "#dc752f")
+        ("THEM" . "#2d9574")
+        ("PROG" . "#4f97d7")
+        ("OKAY" . "#4f97d7")
+        ("DONT" . "#f2241f")
+        ("FAIL" . "#f2241f")
+        ("DONE" . "#86dc2f")
+        ("NOTE" . "#b1951d")
+        ("KLUDGE" . "#b1951d")
+        ("HACK" . "#b1951d")
+        ("TEMP" . "#b1951d")
+        ("FIXME" . "#dc752f")
+        ("XXX+" . "#dc752f")
+        ("\\?\\?\\?+" . "#dc752f")))
+ '(jdee-db-active-breakpoint-face-colors (cons "#000000" "#80A0C2"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#000000" "#A2BF8A"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#000000" "#3f3f3f"))
+ '(objed-cursor-color "#C16069")
+  '(org-agenda-files
+     '("/Users/m161475/org/inbox.org" "/Users/m161475/org/projects.org" "/Users/m161475/org/tickler.org" "/Users/m161475/org/journal.org.gpg" "/Users/m161475/org/journal/20211117.gpg"))
+ '(org-fontify-done-headline nil)
+ '(org-fontify-todo-headline nil)
   '(package-selected-packages
-     (quote
-       (treemacs-persp treemacs-evil magit-section flycheck-package package-lint let-alist evil-textobj-line evil-org evil-lion evil-goggles evil-cleverparens hybrid-mode edit-indirect ssass-mode csv-mode eglot flymake engine-mode command-log-mode jsonrpc company-pollen pollen-mode psci purescript-mode psc-ide dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a racket-mode faceup ox-gfm fsharp-mode company-quickhelp prettier-js typit mmt sudoku pacmacs 2048-game ox-reveal yaml-mode pandoc-mode ox-pandoc graphviz-dot-mode selectric-mode sql-indent emoji-cheat-sheet-plus company-emoji omnisharp csharp-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip eshell-z eshell-prompt-extras esh-help auto-dictionary editorconfig tide typescript-mode flycheck web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme slack emojify circe oauth2 websocket ht seti-theme reverse-theme rebecca-theme rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit transient git-commit with-editor evil-commentary company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+     '(ox-report true helm-dash dash-docs dash-at-point edit-indirect ssass-mode csv-mode eglot flymake engine-mode command-log-mode jsonrpc company-pollen pollen-mode psci purescript-mode psc-ide dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a racket-mode faceup ox-gfm fsharp-mode company-quickhelp prettier-js typit mmt sudoku pacmacs 2048-game ox-reveal yaml-mode pandoc-mode ox-pandoc graphviz-dot-mode selectric-mode sql-indent emoji-cheat-sheet-plus company-emoji omnisharp csharp-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip eshell-z eshell-prompt-extras esh-help auto-dictionary editorconfig tide typescript-mode flycheck web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme slack emojify circe oauth2 websocket ht seti-theme reverse-theme rebecca-theme rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit transient git-commit with-editor evil-commentary company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
  '(psc-ide-add-import-on-completion t t)
- '(psc-ide-rebuild-on-save nil t))
+ '(psc-ide-rebuild-on-save nil t)
+  '(rustic-ansi-faces
+     ["#323334" "#C16069" "#A2BF8A" "#ECCC87" "#80A0C2" "#B58DAE" "#86C0D1" "#eceff4"])
+ '(treemacs-follow-mode t)
+ '(vc-annotate-background "#323334")
+  '(vc-annotate-color-map
+     (list
+       (cons 20 "#A2BF8A")
+       (cons 40 "#bac389")
+       (cons 60 "#d3c788")
+       (cons 80 "#ECCC87")
+       (cons 100 "#e3b57e")
+       (cons 120 "#da9e75")
+       (cons 140 "#D2876D")
+       (cons 160 "#c88982")
+       (cons 180 "#be8b98")
+       (cons 200 "#B58DAE")
+       (cons 220 "#b97e97")
+       (cons 240 "#bd6f80")
+       (cons 260 "#C16069")
+       (cons 280 "#a0575e")
+       (cons 300 "#804f54")
+       (cons 320 "#5f4749")
+       (cons 340 "#525252")
+       (cons 360 "#525252")))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Fira Mono")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width ultra-condensed :foundry "nil" :family "Fira Mono")))))
 )
