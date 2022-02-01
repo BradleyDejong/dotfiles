@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: inline arrow func
+# key: f
+# --
+
+() => $0

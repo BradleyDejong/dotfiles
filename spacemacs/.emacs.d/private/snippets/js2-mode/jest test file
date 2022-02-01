@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: jest test file
+# key: jest
+# --
+
+import { assert } from "chai";
+
+/*eslint-env jest*/
+
+describe("$1", () => {
+
+  test("$2", () => {
+    $3
+  });
+
+})

@@ -1,3 +1,5 @@
+source /etc/static/bashrc
+
 updatezsh() {
  antibody bundle < ~/.zsh/plugins.txt > ~/.zsh/plugins.sh
  antibody update
@@ -37,3 +39,11 @@ export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
 
 alias shipit='git add . && git commit -m "SHIP IT NOW" && git push --force'
 
+alias nixre="darwin-rebuild switch"
+alias nixgc="nix-collect-garbage -d"
+alias nixq="nix-env -qaP"
+alias nixupgrade="sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'"
+alias nixup="nix-env -u"
+alias nixcfg="nvim ~/.nixpkgs/darwin-configuration.nix"
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+export JAVA_HOME="/usr/local/opt/openjdk@11"

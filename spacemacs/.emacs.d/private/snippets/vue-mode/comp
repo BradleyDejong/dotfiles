@@ -1,0 +1,27 @@
+#key : comp
+#name : VueComponent
+# --
+<template>
+<div>
+$0
+</div>
+</template>
+
+<script>
+export default {
+  props: {
+  },
+  components: {
+  },
+  methods: {
+  },
+  data: function() {
+    return {};
+  },
+  computed: {
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>

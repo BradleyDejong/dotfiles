@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: import ramda
+# key: ram
+# --
+
+import { $1 } from "ramda";

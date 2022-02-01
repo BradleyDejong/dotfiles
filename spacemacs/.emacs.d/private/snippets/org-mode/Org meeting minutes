@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: Org meeting minutes
+# key: meet
+# --
+
+* $1
+:PROPERTIES:
+:EXPORT_OPTIONS: toc:nil
+:EXPORT_DATE: `(format-time-string "%Y-%m-%d")`
+:EXPORT_WHERE: $2
+:EXPORT_INITIATOR: $3
+:EXPORT_PROJECT: $4
+:EXPORT_DURATION: $5
+:EXPORT_PRESENT: $6
+:EXPORT_ABSENT: $7
+:EXPORT_EXCUSE: $8
+:END:
+
+$0

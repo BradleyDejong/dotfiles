@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: Meeting minutes report
+# key: rep
+# --
+
+* ${1:Meeting title}
+:PROPERTIES:
+:EXPORT_OPTIONS: toc:nil
+:EXPORT_DATE: `(format-time-string "%Y-%m-%d")`
+:EXPORT_WHERE: ${2:Location}
+:EXPORT_INITIATOR: ${3:Initiator}
+:EXPORT_PROJECT: ${4:Project}
+:EXPORT_DURATION: ${5:Duration}
+:EXPORT_ABSENT: ${6:Absent}
+:EXPORT_PRESENT: ${7:Present}
+:EXPORT_EXCUSE: ${8:Excused}
+:END:
+** ${First meeting point}
