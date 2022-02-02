@@ -1,6 +1,8 @@
 set nocompatible
 filetype plugin indent on
 set relativenumber
+set number
+set scrolloff=2
 
 set runtimepath+=~/.npm/bin
 
@@ -70,31 +72,33 @@ set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-call minpac#add('neoclide/coc.nvim')
+call minpac#add('neovim/nvim-lspconfig')
+" call minpac#add('neoclide/coc.nvim')
 
 " Use `[c` and `]c` for navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" nmap <silent> [c <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>qf  <Plug>(coc-fix-current)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+" nmap <leader>rn <Plug>(coc-rename)
 
 " Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+" function! s:show_documentation()
+  " if &filetype == 'vim'
+    " execute 'h '.expand('<cword>')
+  " else
+    " call CocAction('doHover')
+  " endif
+" endfunction
+
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
@@ -102,7 +106,9 @@ set shortmess+=c
 set signcolumn=yes
 set cmdheight=2
 " Find symbol of current document
-nmap <leader>o  :<C-u>CocList outline<cr>
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+" nmap <leader>o  :<C-u>CocList outline<cr>
+" command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
 call minpac#add('raichoo/purescript-vim')
+
+luafile ~/.config/nvim/language-client.lua

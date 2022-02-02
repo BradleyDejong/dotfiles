@@ -12,8 +12,8 @@ if [ -e /Users/m161475/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/m16147
 alias g='git'
 TERM=xterm-256color
 
-alias em="~/scripts/em.sh"
-alias emt="emacsclient -nw"
+# alias em="~/scripts/em.sh"
+# alias emt="emacsclient -nw"
 
 export PATH=$PATH:`npm config get prefix`/bin
 export PATH=$PATH:$HOME/.psvm/current/bin
@@ -47,3 +47,6 @@ alias nixup="nix-env -u"
 alias nixcfg="nvim ~/.nixpkgs/darwin-configuration.nix"
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 export JAVA_HOME="/usr/local/opt/openjdk@11"
+
+bindkey -s '^F' "tmux-session-finder\n"
+
