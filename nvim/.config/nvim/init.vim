@@ -10,6 +10,12 @@ packadd minpac
 
 call minpac#init()
 
+call minpac#add('sbdchd/neoformat')
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
+
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-obsession')
 call minpac#add('tpope/vim-fugitive')
