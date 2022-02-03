@@ -18,8 +18,8 @@ call minpac#add('elmcast/elm-vim')
 call minpac#add('tpope/vim-projectionist')
 call minpac#add('tpope/vim-vinegar')
 call minpac#add('radenling/vim-dispatch-neovim')
-call minpac#add('junegunn/fzf', {'do': {-> system('./install --bin')}})
-call minpac#add('junegunn/fzf.vim', {'do': {-> system('./install --bin')}})
+" call minpac#add('junegunn/fzf', {'do': {-> system('./install --bin')}})
+" call minpac#add('junegunn/fzf.vim', {'do': {-> system('./install --bin')}})
 call minpac#add('tpope/vim-scriptease', { 'type': 'opt' })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 call minpac#add('janko-m/vim-test')
@@ -33,13 +33,24 @@ command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
 command! PackList echo join(minpac#getpackages("minpac", "start"), "\n")
 
-nnoremap <C-p> :<C-u>FZF<CR>
+" nnoremap <C-p> :<C-u>FZF<CR>
 
 " window switching helpers
 nnoremap <M-h> <c-w>h
 nnoremap <M-j> <c-w>j
 nnoremap <M-k> <c-w>k
 nnoremap <M-l> <c-w>l
+
+" keep cursor centered when going to next/previous search result
+nnoremap n nzz
+nnoremap N Nzz
+
+" Add break points for undos
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+inoremap / /<c-g>u
 
 if has('nvim')
   tnoremap <M-h> <c-\><c-n><c-w>h
@@ -72,6 +83,7 @@ set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+source $HOME/.config/nvim/completion-lsp.vim
 call minpac#add('neovim/nvim-lspconfig')
 " call minpac#add('neoclide/coc.nvim')
 
@@ -112,3 +124,17 @@ set cmdheight=2
 call minpac#add('raichoo/purescript-vim')
 
 luafile ~/.config/nvim/language-client.lua
+
+call minpac#add("nvim-lua/popup.nvim")
+call minpac#add("nvim-treesitter/nvim-treesitter")
+call minpac#add("nvim-lua/plenary.nvim")
+call minpac#add("nvim-telescope/telescope.nvim")
+call minpac#add("nvim-telescope/telescope-fzy-native.nvim")
+
+nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+luafile ~/.config/nvim/telescope.lua
