@@ -47,10 +47,6 @@ nnoremap <M-j> <c-w>j
 nnoremap <M-k> <c-w>k
 nnoremap <M-l> <c-w>l
 
-" keep cursor centered when going to next/previous search result
-nnoremap n nzz
-nnoremap N Nzz
-
 " Add break points for undos
 inoremap , ,<c-g>u
 inoremap . .<c-g>u
