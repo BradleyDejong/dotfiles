@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-
-session=$(find ~/Development/odn ~/Development ~/Development/kmd ~/Development/kmd/mea -mindepth 1 -maxdepth 1 -type d | fzf)
+projects="$(find $HOME/Development/random $HOME/Development/@partially-practical $HOME/Development/odn $HOME/Development $HOME/Development/kmd $HOME/Development/kmd/mea -mindepth 1 -maxdepth 1 -type d)"
+folders=$(echo $HOME/dotfiles)
+allfolders=$(echo -e "$projects\n$folders")
+session=$(echo "$allfolders" | fzf)
 session_name=$(basename "$session" | tr . _)
 
 if ! tmux has-session -t "$session_name" 2> /dev/null; then

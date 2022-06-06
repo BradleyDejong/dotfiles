@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+thing=$(awk -F '|' '{print $1}' $HOME/.config/launchies/launchies.txt | fzf)
+
+cat $HOME/.config/launchies/launchies.txt\
+  | grep "$thing"\
+  | awk -F '|' '{print $2}'\
+  | sh

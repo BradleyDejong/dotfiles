@@ -50,3 +50,4 @@ export JAVA_HOME="/usr/local/opt/openjdk@11"
 
 bindkey -s '^F' "tmux-session-finder\n"
 
+source <(kubectl completion zsh)

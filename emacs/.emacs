@@ -16,6 +16,11 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(use-package no-littering
+  :config
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -38,9 +43,11 @@
 (setq display-line-numbers 'relative)
 
 (dolist (mode '(org-mode-hook
-		term-mode-hook
-		shell-mode-hook
-		eshell-mode-hook))
+                term-mode-hook
+                shell-mode-hook
+                vterm-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 (use-package rainbow-delimiters
@@ -49,13 +56,20 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode))
+
 (use-package evil
+  :after
+  undo-tree
   :init
+  (setq evil-undo-system 'undo-tree)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-;  :hook (evil-mode . partiallypractical/evil-hook)
+                                        ;  :hook (evil-mode . partiallypractical/evil-hook)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -67,7 +81,7 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-collection
-  :after magit
+  :after evil
   :config
   (evil-collection-init))
 
@@ -82,10 +96,12 @@
   :hook (org-mode . partiallypractical/org-mode-setup)
   :config
   (setq org-ellipsis "  <more>"
-	org-hide-emphasis-markers nil)
+        org-hide-emphasis-markers nil)
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t))))
+   '((emacs-lisp . t)))
+
+  (require 'org-tempo))
 
 (use-package org-bullets
   :after org
@@ -139,12 +155,11 @@
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
+  :config
+  (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-switch-project-action #'projectile-dired))
+  ("C-c p" . projectile-command-map))
 
 (use-package which-key
   :init (which-key-mode)
@@ -168,14 +183,19 @@
   (general-evil-setup t)
 
   (general-create-definer partiallypractical/leader-keys
-			  :keymaps '(normal insert visual emacs)
-			  :prefix "SPC"
-			  :global-prefix "C-SPC")
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
   (partiallypractical/leader-keys
     "b" '(:ignore t :which-key "buffers")
     "bb" '(counsel-ibuffer :which-key "counsel ibuffer")
+    "bd" '(kill-buffer :which-key "delete buffer")
     "bk" '(kill-buffer-and-window :which-key "kill buffer and window")
     "g" '(:ignore t :which-key "git")
+    "p" '(:ignore t :which-key "projectile")
+    "pp" '(projectile-switch-project :which-key "switch project")
+    "pf" '(projectile-find-file :which-key "file")
     "gs" '(magit-status :which-key "git status")
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")))
@@ -190,16 +210,101 @@
 
   (partiallypractical/leader-keys
     "ts" '(hydra-text-scale/body :which-key "scale-text")))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(hydra general helpful which-key projectile magit counsel ivy-rich ivy org-bullets evil-collection evil rainbow-delimiters doom-modeline doom-themes use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho"))
+  :config
+  (when (string= system-type "darwin")
+    (setq dired-use-ls-dired nil)))
+
+(use-package dired-single
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-open
+  :config
+  (setq dired-open-extensions '(("png" . "feh")
+                                ("mp4" . "vlc"))))
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred))
+
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+(defun partiallypractical/lsp-mode-setup ()
+  (setq display-line-numbers 'relative))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024))
+  :hook
+
+  ((lsp-mode . partiallypractical/lsp-mode-setup)
+   (js2-mode . lsp-deferred)
+   (lsp-mode . lsp-enable-which-key-integration)))
+
+(use-package lsp-treemacs
+  :after lsp-mode
+  :config
+  (lsp-treemacs-sync-mode 1))
+
+(use-package flycheck)
+
+;(use-package company
+  ;:after lsp-mode
+  ;:hook (lsp-mode . company-mode)
+  ;:bind
+  ;(:map company-active-map
+        ;("<tab>" . company-complete-selection))
+  ;(:map lsp-mode-map
+        ;("<tab>" . company-indent-or-complete-common))
+  ;:custom
+  ;(company-minimum-prefix-length 1)
+  ;(company-idle-delay 0.0))
+
+;(use-package company-box
+  ;:hook (company-mode . company-box-mode))
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+(use-package term
+  :config
+  (setq explicit-shell-file-name "zsh")
+  (setq term-prompt-regexp "^[^#$%>\n]*[#$%] *"))
+
+(use-package eterm-256color
+  :hook (term-mode . eterm-256color-mode))
+
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000))
+
+(defun partiallypractical/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                    (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'partiallypractical/display-startup-time)

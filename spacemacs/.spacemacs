@@ -656,6 +656,7 @@ If OTHERS is true, skip all entries that do not correspond to TAG."
   (setq org-roam-directory (file-truename "~/org/roam"))
   (setq org-roam-link-title-format "R:%s")
   (setq org-roam-encrypt-files t)
+  (setq org-download-screenshot-method "screencapture -i %s")
   ;;(setq org-roam-completion-system 'helm)
   (add-hook 'after-init-hook 'org-roam-mode)
 

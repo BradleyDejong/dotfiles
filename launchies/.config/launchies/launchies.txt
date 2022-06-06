@@ -1,0 +1,4 @@
+MEDA Test | open https://kmdp-test-meaui.mayo.edu/uat.html
+MEDA Prod | open https://kmdp-prod-meaui.mayo.edu/uat.html
+MEDA Local | open http://localhost:8081/uat.html
+
