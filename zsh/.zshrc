@@ -1,4 +1,4 @@
-source /etc/static/bashrc
+# source /etc/static/bashrc
 
 updatezsh() {
  antibody bundle < ~/.zsh/plugins.txt > ~/.zsh/plugins.sh
@@ -23,6 +23,7 @@ export PATH="$HOME/Library/Python/3.6/lib/python/site-packages:$PATH"
 export PATH="$VIMCONFIG/pack/bundle/start/fzf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=/Applications/Racket\ v7.3/bin:$PATH
+export PATH=/Library/TeX/texbin:$PATH
 
 export VIMCONFIG=~/.config/nvim
 export VIMDATA=~/.local/share/nvim

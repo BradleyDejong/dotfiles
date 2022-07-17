@@ -15,5 +15,6 @@ source /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.c
 fpath+=( /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search )
 source /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 fpath+=( /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting )
+source /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-spwhitt-SLASH-nix-zsh-completions/nix-zsh-completions.plugin.zsh
 source /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-spwhitt-SLASH-nix-zsh-completions/nix.plugin.zsh
 fpath+=( /Users/m161475/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-spwhitt-SLASH-nix-zsh-completions )

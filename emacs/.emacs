@@ -1,3 +1,5 @@
+(setq gc-cons-threshold (* 50 1000 1000))
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -15,11 +17,20 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+(setq use-package-verbose t)
+
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (use-package no-littering
   :config
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'nomessage)
 
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
@@ -30,9 +41,23 @@
 
 (set-face-attribute 'default nil :font "Fira Mono" :height 140)
 
-(use-package doom-themes
+(use-package doom-themes)
+(use-package modus-themes
   :config
-  (load-theme 'doom-palenight t))
+  (setq modus-themes-mode-line '(accented borderless padded))
+  (setq modus-themes-region '(bg-only))
+  (setq modus-themes-completions '(opinionated))
+  (setq modus-themes-bold-constructs t)
+  (setq modus-themes-italic-constructs t)
+  (setq modus-themes-paren-match '(bold intense underline))
+  (setq modus-themes-syntax '(alt-syntax))
+  (setq modus-themes-org-blocks 'tinted-background)
+  (setq modus-themes-headings
+        '(( 1 . (rainbow 1.4))
+          ( 2 . (rainbow 1.25))
+          ( 3 . (rainbow 1.1))
+          ( 4 . (rainbow 1))))
+  (load-theme 'modus-vivendi t))
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
@@ -52,6 +77,9 @@
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
@@ -90,7 +118,41 @@
   (variable-pitch-mode 0)
   (auto-fill-mode 0)
   (visual-line-mode 1)
-  (setq evil-auto-indent nil))
+  (setq evil-auto-indent nil)
+
+  (add-to-list 'org-latex-classes '("simplepdf" "\\documentclass{article}
+    \\usepackage[left=1in,top=1in,right=1in,bottom=1.5in]{geometry}
+    \\usepackage{palatino}
+    \\usepackage{fancyhdr}
+    \\usepackage{sectsty}
+    \\usepackage{engord}
+    \\usepackage{cite}
+    \\usepackage{graphicx}
+    \\usepackage{setspace}
+    \\usepackage[compact]{titlesec}
+    \\usepackage[center]{caption}
+    \\usepackage{multirow}
+    \\usepackage{ifthen}
+    \\usepackage{longtable}
+    \\usepackage{color}
+    \\usepackage{amsmath}
+    \\usepackage{listings}
+    \\usepackage{pdfpages}
+    \\usepackage{nomencl}	% For glossary
+    \\usepackage{pdflscape}	% For landscape pictures and environment
+    \\usepackage{verbatim} 	% For multiline comment environments
+    \\usepackage[T1]{fontenc}
+    \\usepackage[bitstream-charter]{mathdesign}
+    \\usepackage[scaled=.9]{helvet}
+    \\usepackage{courier} % tt
+    \\usepackage[table]{xcolor}"
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'exec-path "/Library/TeX/texbin"))
 
 (use-package org
   :hook (org-mode . partiallypractical/org-mode-setup)
@@ -102,6 +164,9 @@
    '((emacs-lisp . t)))
 
   (require 'org-tempo))
+
+(use-package htmlize
+  :after org)
 
 (use-package org-bullets
   :after org
@@ -117,6 +182,15 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'partiallypractical/org-babel-tangle-config)))
 
+(use-package org-roam
+  :config
+  (setq org-roam-directory (file-truename "~/org/roam"))
+  (setq org-roam-link-title-format "R:%s")
+  (setq org-roam-encrypt-files t)
+  (setq org-download-screenshot-method "screencapture -i %s")
+  ;;(setq org-roam-completion-system 'helm)
+  (add-hook 'after-init-hook 'org-roam-mode))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -125,6 +199,7 @@
 	 ("C-l" . ivy-alt-done)
 	 ("C-j" . ivy-next-line)
 	 ("C-k" . ivy-previous-line)
+	 ("C-w" . evil-delete-backward-word)
 	 :map ivy-switch-buffer-map
 	 ("C-k" . ivy-previous-line)
 	 ("C-l" . ivy-done)
@@ -136,6 +211,7 @@
   (ivy-mode 1))
 
 (use-package ivy-rich
+  :after ivy
   :init
   (ivy-rich-mode 1))
 
@@ -157,18 +233,32 @@
   :diminish projectile-mode
   :config
   (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
+  :custom
+  ((projectile-completion-system 'ivy)
+   (setq projectile-per-project-compilation-buffer t))
   :bind-keymap
-  ("C-c p" . projectile-command-map))
+  ("C-c p" . projectile-command-map)
+  :init
+  (defun partiallypractical/projectile-run-project (&optional prompt)
+    (interactive "P")
+    (let ((compilation-read-command
+           (or (not (projectile-run-command (projectile-compilation-dir)))
+               prompt)))
+      (projectile-run-project prompt))))
+
+(use-package counsel-projectile
+  :after projectile)
 
 (use-package which-key
-  :init (which-key-mode)
+  :defer 0
   :diminish which-key-mode
   :config
+  (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
 (use-package helpful
   :ensure t
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
@@ -179,6 +269,7 @@
   ([remap describe-key] . helpful-key))
 
 (use-package general
+  :defer 0
   :config
   (general-evil-setup t)
 
@@ -188,19 +279,36 @@
     :global-prefix "C-SPC")
 
   (partiallypractical/leader-keys
+    "-" '(dired-jump :which-key "dired")
     "b" '(:ignore t :which-key "buffers")
     "bb" '(counsel-ibuffer :which-key "counsel ibuffer")
     "bd" '(kill-buffer :which-key "delete buffer")
     "bk" '(kill-buffer-and-window :which-key "kill buffer and window")
+    "f" '(:ignore t :which-key "files")
+    "ff" '(counsel-recentf :which-key "recent files")
     "g" '(:ignore t :which-key "git")
+    "gs" '(magit-status :which-key "git status")
+    "l" '(:ignore t :which-key "lsp")
+    "ld" '(lsp-find-definition :which-key "go to definition")
+    "le" '(flycheck-next-error :which-key "next error")
+    "li" '(lsp-find-implementation :which-key "go to implementation")
+    "lr" '(lsp-find-references :which-key "find references")
+    "o" '(:ignore t :which-key "org")
+    "or" '(:ignore t :which-key "roam")
+    "orf" '(org-roam-node-find :which-key "find")
+    "ori" '(org-roam-node-insert :which-key "insert")
+    "oo" '(org-roam-buffer-visit-thing :which-key "open")
     "p" '(:ignore t :which-key "projectile")
     "pp" '(projectile-switch-project :which-key "switch project")
     "pf" '(projectile-find-file :which-key "file")
-    "gs" '(magit-status :which-key "git status")
+    "pg" '(counsel-projectile-rg :which-key "grep")
+    "px" '(partiallypractical/projectile-run-project :which-key "execute")
+    "pt" '(partiallypractical/projectile-terminal :which-key "vterm")
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")))
 
 (use-package hydra
+  :after general
   :config
   (defhydra hydra-text-scale (:timeout 4)
     "scale text"
@@ -221,21 +329,23 @@
     (setq dired-use-ls-dired nil)))
 
 (use-package dired-single
+  :commands (dired dired-jump)
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer))
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
-
 (use-package dired-open
+  :commands (dired dired-jump)
   :config
   (setq dired-open-extensions '(("png" . "feh")
                                 ("mp4" . "vlc"))))
 
+(use-package ripgrep
+  :after projectile)
+
 (use-package editorconfig
-  :ensure t
+  :hook (prog-mode . editorconfig-mode)
   :config
   (editorconfig-mode 1))
 
@@ -244,13 +354,26 @@
   :hook (typescript-mode . lsp-deferred))
 
 (use-package js2-mode
+  :mode "\\.js\\'")
+
+(use-package dhall-mode
+  :mode "\\.dhall\\'"
   :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+  (setq
+   dhall-format-arguments (\` ("--ascii"))
+   dhall-use-header-line nil))
+
+(use-package web-mode
+  :mode "\\.html\\'")
+
+(use-package purescript-mode
+  :mode "\\.purs\\'")
 
 (defun partiallypractical/lsp-mode-setup ()
   (setq display-line-numbers 'relative))
 
 (use-package lsp-mode
+  :after flycheck
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
@@ -260,6 +383,7 @@
 
   ((lsp-mode . partiallypractical/lsp-mode-setup)
    (js2-mode . lsp-deferred)
+   (dhall-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package lsp-treemacs
@@ -267,7 +391,8 @@
   :config
   (lsp-treemacs-sync-mode 1))
 
-(use-package flycheck)
+(use-package flycheck
+  :defer 0)
 
 ;(use-package company
   ;:after lsp-mode
@@ -288,6 +413,7 @@
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
 (use-package term
+  :defer 0
   :config
   (setq explicit-shell-file-name "zsh")
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%] *"))
@@ -300,6 +426,9 @@
   :config
   (setq vterm-max-scrollback 10000))
 
+(use-package prettier-js
+  :hook (js2-mode . prettier-js-mode))
+
 (defun partiallypractical/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
            (format "%.2f seconds"
@@ -308,3 +437,26 @@
            gcs-done))
 
 (add-hook 'emacs-startup-hook #'partiallypractical/display-startup-time)
+(setq gc-cons-threshold (* 2 1000 1000))
+
+(recentf-mode 1)
+
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window
+         display-buffer-reuse-mode-window
+         display-buffer-same-window
+         display-buffer-in-previous-window)
+        . ((mode . (org-mode helpful-mode help-mode vterm-mode)))))
+
+(defun partiallypractical/projectile-terminal (&optional arg)
+  (interactive)
+  (let* ((old-buffer (current-buffer))
+         (project (projectile-acquire-root))
+         (buffer (projectile-generate-process-name "vterm" arg project)))
+    (let ((window (if (buffer-live-p (get-buffer buffer))
+                      (display-buffer buffer '(display-buffer-in-side-window . ((side . bottom))))
+                    (projectile-with-default-dir project
+                      (vterm buffer))
+                    (display-buffer old-buffer '(display-buffer-same-window . ()))
+                    (display-buffer buffer '(display-buffer-in-side-window . ((side . bottom)))))))
+      (select-window window))))
