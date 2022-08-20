@@ -39,7 +39,7 @@
 (set-fringe-mode 10)
 (menu-bar-mode -1)
 
-(set-face-attribute 'default nil :font "Fira Mono" :height 140)
+(set-face-attribute 'default nil :font "Fira Mono" :height 120)
 
 (use-package doom-themes)
 (use-package modus-themes
@@ -161,12 +161,18 @@
         org-hide-emphasis-markers nil)
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t)))
+   '((emacs-lisp . t)
+     (shell . t)))
 
   (require 'org-tempo))
 
 (use-package htmlize
   :after org)
+
+(use-package org-present
+  :after org
+  :config
+  (autoload 'org-present "org-present" nil t))
 
 (use-package org-bullets
   :after org
@@ -298,12 +304,13 @@
     "orf" '(org-roam-node-find :which-key "find")
     "ori" '(org-roam-node-insert :which-key "insert")
     "oo" '(org-roam-buffer-visit-thing :which-key "open")
-    "p" '(:ignore t :which-key "projectile")
-    "pp" '(projectile-switch-project :which-key "switch project")
-    "pf" '(projectile-find-file :which-key "file")
-    "pg" '(counsel-projectile-rg :which-key "grep")
-    "px" '(partiallypractical/projectile-run-project :which-key "execute")
-    "pt" '(partiallypractical/projectile-terminal :which-key "vterm")
+    ;"p" '(:ignore t :which-key "projectile")
+    "p" '(projectile-command-map :which-key "projectile")
+    ;"pp" '(projectile-switch-project :which-key "switch project")
+    ;"pf" '(projectile-find-file :which-key "file")
+    ;"pg" '(counsel-projectile-rg :which-key "grep")
+    ;"px" '(partiallypractical/projectile-run-project :which-key "execute")
+    ;"pt" '(partiallypractical/projectile-terminal :which-key "vterm")
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")))
 
