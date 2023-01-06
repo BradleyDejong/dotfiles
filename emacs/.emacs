@@ -304,13 +304,13 @@
     "orf" '(org-roam-node-find :which-key "find")
     "ori" '(org-roam-node-insert :which-key "insert")
     "oo" '(org-roam-buffer-visit-thing :which-key "open")
-    ;"p" '(:ignore t :which-key "projectile")
-    "p" '(projectile-command-map :which-key "projectile")
-    ;"pp" '(projectile-switch-project :which-key "switch project")
-    ;"pf" '(projectile-find-file :which-key "file")
-    ;"pg" '(counsel-projectile-rg :which-key "grep")
-    ;"px" '(partiallypractical/projectile-run-project :which-key "execute")
-    ;"pt" '(partiallypractical/projectile-terminal :which-key "vterm")
+    "p" '(:ignore t :which-key "projectile")
+    ;"p" '(projectile-command-map :which-key "projectile")
+    "pp" '(projectile-switch-project :which-key "switch project")
+    "pf" '(projectile-find-file :which-key "file")
+    "pg" '(counsel-projectile-rg :which-key "grep")
+    "px" '(partiallypractical/projectile-run-project :which-key "execute")
+    "pt" '(partiallypractical/projectile-terminal :which-key "vterm")
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")))
 
@@ -363,6 +363,10 @@
 (use-package js2-mode
   :mode "\\.js\\'")
 
+(use-package jest
+  :after (js2-mode)
+  :hook (js2-mode . jest-minor-mode))
+
 (use-package dhall-mode
   :mode "\\.dhall\\'"
   :config
@@ -375,6 +379,9 @@
 
 (use-package purescript-mode
   :mode "\\.purs\\'")
+
+(use-package feature-mode
+  :mode "\\.feature\\'")
 
 (defun partiallypractical/lsp-mode-setup ()
   (setq display-line-numbers 'relative))
@@ -435,6 +442,23 @@
 
 (use-package prettier-js
   :hook (js2-mode . prettier-js-mode))
+
+(use-package docker
+  :defer 0
+  :config
+  (partiallypractical/leader-keys
+    "d" '(docker :which-key "docker")))
+
+(use-package yasnippet
+  :defer 0
+  :init
+  (yas-global-mode 1)
+  :config
+                                        ;(add-to-list 'yas-snippets-dirs (locate-user-emacs-file "snippets"))
+  (define-key evil-insert-state-map (kbd "C-<tab>") 'yas-expand)
+
+  (partiallypractical/leader-keys
+    "TAB" 'yas-expand))
 
 (defun partiallypractical/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."

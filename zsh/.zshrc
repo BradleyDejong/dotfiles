@@ -11,6 +11,7 @@ if [ -e /Users/m161475/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/m16147
 
 alias g='git'
 TERM=xterm-256color
+TERM=screen-256color-bce
 
 # alias em="~/scripts/em.sh"
 # alias emt="emacsclient -nw"

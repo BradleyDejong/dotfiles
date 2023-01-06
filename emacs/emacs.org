@@ -372,13 +372,13 @@
         "orf" '(org-roam-node-find :which-key "find")
         "ori" '(org-roam-node-insert :which-key "insert")
         "oo" '(org-roam-buffer-visit-thing :which-key "open")
-        ;"p" '(:ignore t :which-key "projectile")
-        "p" '(projectile-command-map :which-key "projectile")
-        ;"pp" '(projectile-switch-project :which-key "switch project")
-        ;"pf" '(projectile-find-file :which-key "file")
-        ;"pg" '(counsel-projectile-rg :which-key "grep")
-        ;"px" '(partiallypractical/projectile-run-project :which-key "execute")
-        ;"pt" '(partiallypractical/projectile-terminal :which-key "vterm")
+        "p" '(:ignore t :which-key "projectile")
+        ;"p" '(projectile-command-map :which-key "projectile")
+        "pp" '(projectile-switch-project :which-key "switch project")
+        "pf" '(projectile-find-file :which-key "file")
+        "pg" '(counsel-projectile-rg :which-key "grep")
+        "px" '(partiallypractical/projectile-run-project :which-key "execute")
+        "pt" '(partiallypractical/projectile-terminal :which-key "vterm")
         "t" '(:ignore t :which-key "toggles")
         "tt" '(counsel-load-theme :which-key "choose theme")))
 #+end_src
@@ -453,6 +453,10 @@
 #+begin_src emacs-lisp
   (use-package js2-mode
     :mode "\\.js\\'")
+
+  (use-package jest
+    :after (js2-mode)
+    :hook (js2-mode . jest-minor-mode))
 #+end_src
 
 *** Dhall
@@ -477,6 +481,13 @@
     :mode "\\.purs\\'")
 
 #+end_src
+
+*** Gherkin/cucumber
+#+begin_src emacs-lisp
+  (use-package feature-mode
+    :mode "\\.feature\\'")
+#+end_src
+
 
 ** LSP
 
@@ -563,6 +574,27 @@ Written in emacs-lisp
 #+begin_src emacs-lisp
   (use-package prettier-js
     :hook (js2-mode . prettier-js-mode))
+#+end_src
+** Docker
+#+begin_src emacs-lisp
+  (use-package docker
+    :defer 0
+    :config
+    (partiallypractical/leader-keys
+      "d" '(docker :which-key "docker")))
+#+end_src
+** snippets
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :defer 0
+    :init
+    (yas-global-mode 1)
+    :config
+                                          ;(add-to-list 'yas-snippets-dirs (locate-user-emacs-file "snippets"))
+    (define-key evil-insert-state-map (kbd "C-<tab>") 'yas-expand)
+
+    (partiallypractical/leader-keys
+      "TAB" 'yas-expand))
 #+end_src
 
 * Startup speed

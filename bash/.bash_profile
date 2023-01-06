@@ -1,6 +1,7 @@
 
 alias g='git'
 TERM=xterm-256color
+TERM=screen-256color-bce
 
 export PATH=$PATH:`npm config get prefix`/bin
 

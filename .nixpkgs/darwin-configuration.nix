@@ -22,7 +22,7 @@ in
       pkgs.neovim
       pkgs.git
       pkgs.zsh
-      pkgs.antibody
+      # pkgs.antibody
       pkgs.oh-my-zsh
       pkgs.nodejs-10_x
       tmux
