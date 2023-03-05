@@ -46,6 +46,7 @@ in
       pkgs.cmake
       pkgs.libtool
       pkgs.alacritty
+      pkgs.docker
     ];
 
   # Use a custom configuration.nix location.

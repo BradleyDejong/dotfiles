@@ -4,6 +4,9 @@ require('telescope').setup{
     -- Default configuration for telescope goes here:
     -- config_key = value,
     mappings = {
+      i = {
+        ["<C-h>"] = "which_key"
+      }
     }
   },
   extensions = {

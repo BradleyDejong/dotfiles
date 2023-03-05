@@ -47,8 +47,8 @@ alias nixq="nix-env -qaP"
 alias nixupgrade="sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'"
 alias nixup="nix-env -u"
 alias nixcfg="nvim ~/.nixpkgs/darwin-configuration.nix"
-export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-export JAVA_HOME="/usr/local/opt/openjdk@11"
+# export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+# export JAVA_HOME="/usr/local/opt/openjdk@11"
 
 bindkey -s '^F' "tmux-session-finder\n"
 

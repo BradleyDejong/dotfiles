@@ -71,5 +71,10 @@ ls.add_snippets("javascript", {
   }),
   s("trace", {
     t("(console.log(\""), i(1, "prefix"), t("\", "), i(2, "x"), t("), "), rep(2), t(")")
+  }),
+  s("jest", {
+    t({"import { assert } from \"chai\"", "",""}),
+    t({"/*eslint-env jest*/", ""}),
+    t("describe(\""), i(1, "test group description"), t({"\", () => {", "  "}), i(2), t({"", "});"})
   })
 })
