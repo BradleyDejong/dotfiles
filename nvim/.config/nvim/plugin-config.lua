@@ -1,7 +1,4 @@
 
-require("which-key").setup({
-})
-
 function mapN(lhs, desc, callback)
   vim.api.nvim_set_keymap('n',lhs, '', {
      desc = desc,
@@ -67,14 +64,3 @@ vim.api.nvim_create_autocmd(
     { pattern = { "*.feature" }, callback = setupGhokin }
 )
 
-
-
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "help", "javascript", "typescript", "c", "lua", "rust", "norg" },
-  sync_install = false,
-  auto_install = false,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-}

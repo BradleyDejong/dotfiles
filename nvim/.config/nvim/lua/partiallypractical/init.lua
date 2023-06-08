@@ -1,4 +1,6 @@
-require("partiallypractical/snippets")
+-- require("partiallypractical/snippets")
+require("partiallypractical/remap")
+require("partiallypractical/set")
 
 function DoColors(color)
   color = color or "rose-pine"

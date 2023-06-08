@@ -1,37 +1,13 @@
-set nocompatible
 filetype plugin indent on
-set relativenumber
-set number
-set scrolloff=8
 
 set runtimepath+=~/.npm/bin
 
-set packpath^=~/.vim
-
 luafile ~/.config/nvim/plugin-setup.lua
-
-"packadd minpac
-
-"call minpac#init()
 
 augroup fmt
   autocmd!
   autocmd BufWritePre * undojoin | Neoformat
 augroup END
-
-" Vim test plugin and setup
-"let test#strategy = "dispatch"
-"let g:test#enabled_runners = ["javascript#jest"]
-"augroup test
-  "autocmd!
-  "autocmd BufWrite * if test#exists() |
-    "\   TestFile |
-    "\ endif
-"augroup END
-
-"command! PackUpdate call minpac#update()
-"command! PackClean call minpac#clean()
-"command! PackList echo join(minpac#getpackages("minpac", "start"), "\n")
 
 " Add break points for undos
 inoremap , ,<c-g>u
@@ -47,11 +23,7 @@ if has('nvim')
   tnoremap <M-l> <c-\><c-n><c-w>l
 endif
 
-"undo persistence
-set undofile
-set undodir=$VIMDATA/undo
 call mkdir(&undodir, 'p')
-
 
 augroup vimrc
   autocmd!
@@ -70,9 +42,6 @@ source $HOME/.config/nvim/completion-lsp.vim
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-set cmdheight=2
 
 luafile ~/.config/nvim/language-client.lua
 
