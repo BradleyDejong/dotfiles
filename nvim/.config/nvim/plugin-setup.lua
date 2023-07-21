@@ -30,7 +30,8 @@ require("lazy").setup({
               home = "~/Nextcloud/notes/neorg/home"
             }
           }
-        }
+        },
+        ["core.export"] = {}
       }
     },
     dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
@@ -183,6 +184,16 @@ require("lazy").setup({
 
       lsp.setup()
 
+      local cmp = require("cmp")
+      local cmp_action = require("lsp-zero").cmp_action()
+      cmp.setup({
+        sources = {
+          {name = 'nvim_lsp'},
+          {name = 'buffer', keyword_length = 3},
+          {name = 'luasnip', keyword_length = 2 }
+        }
+      })
+
       vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
       vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
       vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
@@ -200,4 +211,6 @@ require("lazy").setup({
   'hrsh7th/cmp-buffer',
   'saadparwaiz1/cmp_luasnip',
   'onsails/lspkind.nvim',
+  'Olical/conjure',
+  'gpanders/nvim-parinfer'
 }, opts)

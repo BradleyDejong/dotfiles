@@ -44,16 +44,16 @@ local d = ls.dynamic_node
 local r = ls.restore_node
 local rep = extras.rep
 
-ls.add_snippets("all", {
-	s("ternary", {
-		i(1, "cond"), t(" ? "), i(2, "then"), t(" : "), i(3, "else")
-	})
-})
+-- ls.add_snippets("all", {
+	-- s("ternary", {
+		-- i(1, "cond"), t(" ? "), i(2, "then"), t(" : "), i(3, "else")
+	-- })
+-- })
 
 ls.add_snippets("javascript", {
-	s("f", {
-    t("() => "), i(1,"")
-	}),
+	--s("f", {
+    --t("() => "), i(1,"")
+	--}),
 	s("fun", {
     t("("), i(1, "x"), t(") => "), i(2,"")
 	}),
