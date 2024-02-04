@@ -27,7 +27,7 @@ end
 mapN(
   '<Leader>/',
   "Buffer fzy find",
-  require('partiallypractical.telescope').telescope_mappings.curr_buf
+  require('partiallypractical/telescope').telescope_mappings.curr_buf
 )
 
 mapN('<c-p>',"Tscpe find files", require('telescope.builtin').git_files)
