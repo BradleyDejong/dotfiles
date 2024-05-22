@@ -1,6 +1,7 @@
 export VIMCONFIG=~/.config/nvim
 export VIMDATA=~/.local/share/nvim
 export EDITOR=nvim
+export PATH="$HOME/.local/bin:$PATH"
 TERM=xterm-256color
 TERM=screen-256color-bce
 
@@ -12,3 +13,5 @@ set -o vi
 alias vim=nvim
 alias vi=nvim
 alias g='git'
+
+export GPG_TTY=$(tty)

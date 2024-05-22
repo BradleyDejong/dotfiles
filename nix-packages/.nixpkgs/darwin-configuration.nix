@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  tmux = import ~/.nixpkgs/tmux (with pkgs;
+  tmux2 = import ~/.nixpkgs/tmux (with pkgs;
     { inherit
         makeWrapper
 	symlinkJoin
@@ -20,10 +20,11 @@ in
       pkgs.neovim
       pkgs.git
       pkgs.zsh
+      pkgs.pinentry_mac
       # pkgs.antibody
       pkgs.oh-my-zsh
-      #pkgs.nodejs-18_x
-      tmux
+      pkgs.nodejs_20
+      pkgs.tmux
       #pkgs.tmuxinator
       pkgs.wget
       pkgs.fd
@@ -36,6 +37,9 @@ in
       # pkgs.lolcat
       # pkgs.toilet
       pkgs.figlet
+      pkgs.kitty
+      pkgs.starship
+      pkgs.direnv
       pkgs.gnupg
       # pkgs.sl
       # pkgs.mono6
@@ -80,7 +84,7 @@ in
   # environment.allowUnsupportedSystem = true;
 
   # Auto upgrade nix package and the daemon service.
-  # services.nix-daemon.enable = true;
+  services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
 
   # Create /etc/bashrc that loads the nix-darwin environment.
@@ -94,7 +98,7 @@ in
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
-  nix.maxJobs = 2;
-  nix.buildCores = 2;
+  # nix.maxJobs = 2;
+  # nix.buildCores = 2;
   # nixpkgs.config.allowUnsupportedSystem = true;
 }
