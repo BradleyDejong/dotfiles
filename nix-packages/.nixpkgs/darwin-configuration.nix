@@ -23,7 +23,7 @@ in
       pkgs.pinentry_mac
       # pkgs.antibody
       pkgs.oh-my-zsh
-      pkgs.nodejs_20
+      #pkgs.nodejs-18_x
       pkgs.tmux
       #pkgs.tmuxinator
       pkgs.wget
