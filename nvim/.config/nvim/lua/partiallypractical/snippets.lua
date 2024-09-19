@@ -69,6 +69,9 @@ ls.add_snippets("javascript", {
   s("test", {
     t("test(\""), i(1, "test description"), t({"\", () => {", "  "}), i(2), t({"", "});"})
   }),
+  s("it", {
+    t("it(\""), i(1, "test description"), t({"\", () => {", "  "}), i(2), t({"", "});"})
+  }),
   s("trace", {
     t("(console.log(\""), i(1, "prefix"), t("\", "), i(2, "x"), t("), "), rep(2), t(")")
   }),

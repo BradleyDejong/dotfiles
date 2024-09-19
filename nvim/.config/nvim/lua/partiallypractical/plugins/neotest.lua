@@ -43,6 +43,7 @@ return {
                 "--full-trace",
                 "--reporter=json",
                 "--reporter-options=output=" .. context.results_path,
+		"--grep=" .. context.test_name_pattern,
                 context.path,
             }
           end,

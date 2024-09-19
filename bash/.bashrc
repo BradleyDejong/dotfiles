@@ -11,7 +11,6 @@ eval "$(direnv hook bash)"
 set -o vi
 
 alias vim=nvim
-alias vi=nvim
 alias g='git'
 
 export GPG_TTY=$(tty)

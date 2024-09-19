@@ -13,3 +13,6 @@ vim.opt.cmdheight = 2
 vim.opt.signcolumn = "yes"
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
