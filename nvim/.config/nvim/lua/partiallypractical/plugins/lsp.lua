@@ -53,6 +53,7 @@ return {
       lsp.on_attach(on_attach)
 
       require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+      require('lspconfig').ocamllsp.setup({})
 
       require('lspconfig').purescriptls.setup {
         -- on_attach = on_attach,
