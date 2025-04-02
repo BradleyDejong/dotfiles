@@ -14,6 +14,7 @@ return {
       vim.keymap.set("n", "<Leader>zfd", "<cmd>Telekasten find_daily_notes<CR>")
       vim.keymap.set("n", "<Leader>zfg", "<cmd>Telekasten search_notes<CR>")
       vim.keymap.set("n", "<Leader>zz", "<cmd>Telekasten follow_link<CR>")
+      vim.keymap.set("n", "<Leader>zn", "<cmd>Telekasten new_note<CR>")
       vim.keymap.set("n", "<Leader>zft", "<cmd>Telekasten search_notes<CR>\\[ \\]", { desc = "Find todos"})
       vim.keymap.set("n", "<Leader>zgT", "<cmd>Telekasten goto_today<CR>", { desc = "Goto today"})
       vim.keymap.set("n", "<Leader>zT", "<cmd>Telekasten toggle_todo<CR>", { desc = "Toggle todo"})

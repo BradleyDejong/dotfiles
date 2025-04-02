@@ -22,8 +22,9 @@ return {
       local opts = { noremap= true, silent=true }
 
       lsp.ensure_installed({
-        "tsserver",
+        "ts_ls",
         "eslint",
+        "dhall_lsp_server",
         "vuels",
         "jdtls",
         "lua_ls"

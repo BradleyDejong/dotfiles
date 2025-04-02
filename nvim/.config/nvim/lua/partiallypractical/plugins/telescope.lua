@@ -10,6 +10,17 @@ return {
         })
       end
 
+      require("telescope").setup {
+        pickers = {
+          find_files = {
+            theme = "ivy"
+          },
+          git_files = {
+            theme = "ivy"
+          }
+        }
+      }
+
       local function mapBufN(lhs, desc, callback)
         vim.api.nvim_buf_set_keymap(0, 'n',lhs, '', {
           desc = desc,

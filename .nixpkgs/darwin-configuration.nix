@@ -2,11 +2,7 @@
 
 let
   tmux = import ~/.nixpkgs/tmux (with pkgs;
-    { inherit
-        makeWrapper
-	symlinkJoin
-	writeText
-	;
+    { inherit makeWrapper symlinkJoin writeText ;
       tmux = pkgs.tmux;
     });
 

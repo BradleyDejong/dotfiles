@@ -1,3 +1,4 @@
+require("luasnip.session.snippet_collection").clear_snippets "javascript"
 local ls = require "luasnip"
 local extras = require "luasnip.extras"
 
@@ -31,8 +32,6 @@ end, {silent = true})
 
 vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/partiallypractical/snippets.lua<CR>")
 
-print "Reloaded snippets"
-
 local s = ls.snippet
 local sn = ls.snippet_node
 local isn = ls.indent_snippet_node
@@ -43,12 +42,65 @@ local c = ls.choice_node
 local d = ls.dynamic_node
 local r = ls.restore_node
 local rep = extras.rep
+local fmt = require("luasnip.extras.fmt").fmt
 
 -- ls.add_snippets("all", {
 	-- s("ternary", {
 		-- i(1, "cond"), t(" ? "), i(2, "then"), t(" : "), i(3, "else")
 	-- })
 -- })
+--
+local customElementSnippet = fmt([[
+const styles = () => html`
+<style>
+  .main {{
+  }}
+</style>
+`;
+
+export class {} extends HTMLElement {{
+  static observedAttributes = [];
+
+  /** @type ShadowRoot */
+  shadowRoot;
+  /** @type ElementInternals*/
+  _internals;
+
+  constructor() {{
+    super();
+    this._internals = this.attachInternals();
+    this.shadowRoot = this.attachShadow({{ mode: "closed" }});
+
+    this.shadowRoot.appendChild(html`<div class="main"></div>`);
+    this.shadowRoot.appendChild(styles());
+  }}
+
+  connectedCallback() {{
+    console.log("{} connected");
+  }}
+
+  rerender() {{
+    morph(
+      this.shadowRoot.querySelector("div.main"),
+      html`<div class="main">
+
+      </div>`,
+    );
+  }}
+
+  attributeChangedCallback(name, old, newVal) {{
+
+  }}
+}}
+
+customElements.define("{}", {});
+
+]], {
+  i(1, "ClassName"),
+  rep(1, "ClassName"),
+  i(2, "tag-name"),
+  rep(1, "ClassName")
+})
 
 ls.add_snippets("javascript", {
 	--s("f", {
@@ -79,5 +131,67 @@ ls.add_snippets("javascript", {
     t({"import { assert } from \"chai\"", "",""}),
     t({"/*eslint-env jest*/", ""}),
     t("describe(\""), i(1, "test group description"), t({"\", () => {", "  "}), i(2), t({"", "});"})
+  }),
+
+  s("aroute",
+  fmt(
+  [[
+    /** @type import("astro").APIRoute */
+    export async function {}(context) {{
+      {}
+    }}
+  ]],
+  {
+    c(1, { t "GET", t "POST", t "PUT", t "DELETE", t "PATCH" }),
+    i(2, "/*route body fmt*/"),
+  }
+  )
+  ),
+
+  s({ trig = "im", name = "import (nodejs)"},
+  fmt([[import {{{}}} from "{}";]], {
+    i(2, ""),
+    i(1, "")
   })
+  ),
+  s("@type",
+  fmt(
+  [[
+  /** @type {} */
+  ]],
+  {
+    c(1, {
+      t "import(\"astro\").MiddlewareResponseHandler",
+      t "import(\"astro\").APIRoute",
+      t "import(\"redis\").RedisClientType",
+      t "import(\"@google-cloud/firestore\").Firestore",
+      t "import(\"@google-cloud/storage\").Bucket",
+    })
+  }
+  )),
+
+  s({ trig = "dts", name="daggy taggedSum"},
+  fmt([[const {} = daggy.taggedSum("{}", {{
+    {}: [{}],
+    {}: [{}],
+  }});
+  ]],
+  {
+    i(1, "ADTName"),
+    rep(1, "ADTName"),
+    i(2, "Name1"),
+    i(3, ""),
+    i(4, "Name2"),
+    i(5, ""),
+  }
+  )),
+  s("As",
+  fmt([[Async((rej,res) => {{
+  {}
+}})
+  ]], {
+    i(1,"")
+  })),
+  s("customelement", customElementSnippet)
+
 })
