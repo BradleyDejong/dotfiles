@@ -16,6 +16,7 @@ return {
       {'hrsh7th/nvim-cmp'},     -- Required
       {'hrsh7th/cmp-nvim-lsp'}, -- Required
       {'L3MON4D3/LuaSnip'},     -- Required
+      {'PaterJason/cmp-conjure'}
     },
     config = function()
       local lsp = require('lsp-zero').preset({})
@@ -76,6 +77,7 @@ return {
       cmp.setup({
         sources = {
           {name = 'nvim_lsp'},
+          {name = 'conjure'},
           {name = 'buffer', keyword_length = 3},
           {name = 'luasnip', keyword_length = 2 }
         }

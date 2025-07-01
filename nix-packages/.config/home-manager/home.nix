@@ -26,16 +26,20 @@
     pkgs.neovim
     pkgs.git
     pkgs.fzf
+    pkgs.nmap
     pkgs.xclip
     pkgs.libGL
     pkgs.libGLU
     pkgs.freeglut
     pkgs.brave
+    pkgs.yt-dlp
+    # pkgs.makemkv
     pkgs.glances
     pkgs.nodejs_22
+    pkgs.parallel
     pkgs.geeqie
     pkgs.darktable
-    pkgs.rawtherapee
+    # pkgs.rawtherapee
 # pkgs.gnome.gnome-terminal
     pkgs.tmux
     pkgs.starship
